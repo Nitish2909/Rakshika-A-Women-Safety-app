@@ -2,6 +2,9 @@ import React from "react";
 import { IoNotifications } from "react-icons/io5";
 import SOSButton from "../../components/SOSButton/SOSButton";
 import QuickActions from "../../components/QuickActions/QuickActions";
+import LocationMap from "../../components/LocationMap/LocationMap";
+import Contacts from "../Contacts/Contacts";
+import NearbyHelp from "../NearbyHelp/NearbyHelp";
 
 const Dashboard = () => {
   return (
@@ -26,7 +29,6 @@ const Dashboard = () => {
 
         <h3 className="">Anjali Sharma</h3>
       </nav>
-      <sidebar></sidebar>
       <div className="flex items-center gap-3 p-2 sm:flex flex-col">
         {/* Card */}
         <div className="w-full max-w-2xl mx-auto bg-gradient-to-r from-pink-500 to-purple-500 rounded-2xl shadow-xl p-4 sm:p-6 md:p-8 text-white mt-4 ">
@@ -38,6 +40,12 @@ const Dashboard = () => {
         <SOSButton/>
 
         <QuickActions/>
+
+        <LocationMap/>
+
+        <Contacts/>
+
+        <NearbyHelp/>
       </div>
     </div>
   );

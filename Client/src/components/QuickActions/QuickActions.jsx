@@ -10,7 +10,7 @@ const QuickActions = () => {
       <div className="flex items-center justify-center mb-4">
         <h2 className="font-semibold text-3xl">Quick Actions</h2>
       </div>
-      <div className="flex gap-5 ">
+      <div className="flex justify-center gap-3 w-full ">
         <div className="">
           <div className="bg-pink-500 text-white rounded-full w-14 h-14  flex items-center justify-center">
             <IoCall size={30} />
@@ -21,8 +21,13 @@ const QuickActions = () => {
           <div className="bg-pink-500 text-white rounded-full w-14 h-14  flex items-center justify-center">
             <FaMapMarkerAlt size={35} />
           </div>
-          <h3 className="">Share<br/>Location</h3>
-
+          <h3 className="">
+            Share
+            <br />
+            Location
+          </h3>
+        </div>
+        <div className="">
           <div className="bg-pink-500 text-white rounded-full w-14 h-14  flex items-center justify-center">
             <IoMic size={35} />
           </div>
@@ -30,9 +35,7 @@ const QuickActions = () => {
         </div>
         <div className="">
           <div className="bg-pink-500 text-white rounded-full w-14 h-14  flex items-center justify-center">
-            <MdSos
-              size={35}
-            />
+            <MdSos size={35} />
           </div>
           <h3 className="">Alert</h3>
         </div>
