@@ -1,44 +1,49 @@
 import React from "react";
-import { IoCall } from "react-icons/io5";
+import { IoCall, IoMic } from "react-icons/io5";
 import { FaMapMarkerAlt } from "react-icons/fa";
-import { IoMic } from "react-icons/io5";
 import { MdSos } from "react-icons/md";
 
 const QuickActions = () => {
+  const actions = [
+    {
+      icon: <IoCall size={32} />,
+      title: "Fake Call",
+    },
+    {
+      icon: <FaMapMarkerAlt size={32} />,
+      title: "Share Location",
+    },
+    {
+      icon: <IoMic size={32} />,
+      title: "Voice Alert",
+    },
+    {
+      icon: <MdSos size={32} />,
+      title: "Emergency Alert",
+    },
+  ];
+
   return (
-    <div>
-      <div className="flex items-center justify-center mb-4">
-        <h2 className="font-semibold text-3xl">Quick Actions</h2>
-      </div>
-      <div className="flex justify-center gap-3 w-full ">
-        <div className="">
-          <div className="bg-pink-500 text-white rounded-full w-14 h-14  flex items-center justify-center">
-            <IoCall size={30} />
+    <div className="w-full">
+      <h2 className="text-center text-2xl md:text-3xl font-bold mb-6">
+        Quick Actions
+      </h2>
+
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+        {actions.map((action, index) => (
+          <div
+            key={index}
+            className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 p-6 flex flex-col items-center cursor-pointer"
+          >
+            <div className="bg-pink-500 text-white rounded-full w-16 h-16 md:w-20 md:h-20 flex items-center justify-center mb-3">
+              {action.icon}
+            </div>
+
+            <h3 className="text-center font-medium text-gray-700">
+              {action.title}
+            </h3>
           </div>
-          <h3 className="">Fake Call</h3>
-        </div>
-        <div className="">
-          <div className="bg-pink-500 text-white rounded-full w-14 h-14  flex items-center justify-center">
-            <FaMapMarkerAlt size={35} />
-          </div>
-          <h3 className="">
-            Share
-            <br />
-            Location
-          </h3>
-        </div>
-        <div className="">
-          <div className="bg-pink-500 text-white rounded-full w-14 h-14  flex items-center justify-center">
-            <IoMic size={35} />
-          </div>
-          <h3 className="">Voice Alert</h3>
-        </div>
-        <div className="">
-          <div className="bg-pink-500 text-white rounded-full w-14 h-14  flex items-center justify-center">
-            <MdSos size={35} />
-          </div>
-          <h3 className="">Alert</h3>
-        </div>
+        ))}
       </div>
     </div>
   );
