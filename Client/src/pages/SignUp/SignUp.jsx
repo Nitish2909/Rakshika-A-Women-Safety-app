@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-// import axiosInstance from '../api/axios.js';
+import axiosInstance from '../../services/axios.js';
 
 const SignUp = () => {
   const navigate = useNavigate();
-  const [username, setUsername] = useState("");
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
@@ -13,13 +13,14 @@ const SignUp = () => {
     e.preventDefault();
     // Handle form submission logic here
 
-    // const response = await axiosInstance.post("http://localhost:5001/api/auth/register", { username, email, password })
-    // console.log(response.data)
-    navigate("/login");
+    const response = await axiosInstance.post("http://localhost:3000/api/auth/register", { name, email,phone, password })
+    console.log(response.data)
+    // navigate("/login");
 
     // Reset form fields
-    setUsername("");
+    setName("");
     setEmail("");
+    setPhone("");
     setPassword("");
   };
 
@@ -38,9 +39,9 @@ const SignUp = () => {
           <input
             type="text"
             placeholder="Name"
-            name="username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            name="name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
             className="px-4 py-3 rounded-lg bg-gray-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
           />
 
