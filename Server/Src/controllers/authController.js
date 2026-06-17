@@ -14,9 +14,9 @@ import crypto from "crypto";
  */
 export const registerUserController = async (req, res) => {
   try {
-    const { username, email,phone, password } = req.body;
+    const { name, email,phone, password } = req.body;
     //1. check empty
-    if (!username || !email || !phone || !password) {
+    if (!name || !email || !phone || !password) {
       return res.status(400).json({
         message: "All Fields Are Required",
       });
@@ -37,7 +37,7 @@ export const registerUserController = async (req, res) => {
 
     //4.create a new user
     const user = await User.create({
-      username,
+      name,
       email,
       phone,
       password: hashedPassword,
@@ -73,7 +73,7 @@ export const registerUserController = async (req, res) => {
       message: "User Registered Successfully",
       user: {
         _id: user._id,
-        username: user.username,
+        username: user.name,
         email: email,
       },
       accessToken, // send to frontend
