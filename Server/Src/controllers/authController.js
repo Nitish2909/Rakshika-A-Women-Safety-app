@@ -63,8 +63,13 @@ export const registerUserController = async (req, res) => {
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
       secure: false, // Set to true in production with HTTPS
-      sameSite: "none",
+      sameSite: "Lax",
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+    }).cookie("accessToken", accessToken, {
+      httpOnly: true,
+      secure: false, // Set to true in production with HTTPS
+      sameSite: "Lax",
+      maxAge: 15 * 60 * 1000, // 15 minutes
     });
 
     //10. send response with user
@@ -142,7 +147,7 @@ export const loginUserController = async (req, res) => {
     // res.cookie("refreshToken", refreshToken, {
     //   httpOnly: true,
     //   secure: true,
-    //   sameSite: "none",
+    //   sameSite: "Lax",
     //   maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     // });
 
@@ -213,8 +218,13 @@ export const loginUserController = async (req, res) => {
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
       secure: false, // Set to true in production with HTTPS
-      sameSite: "none",
+      sameSite: "Lax",
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+    }).cookie("accessToken", accessToken, {
+      httpOnly: true,
+      secure: false, // Set to true in production with HTTPS
+      sameSite: "Lax",
+      maxAge: 15 * 60 * 1000, // 15 minutes
     });
 
    // 12 send response with user and access token
@@ -313,9 +323,14 @@ export const refreshTokenController = async (req, res) => {
     //9. store token in cookies
     res.cookie("refreshToken", newRefreshToken, {
       httpOnly: true,
-      secure: true,
-      sameSite: "none",
+      secure: false, // Set to true in production with HTTPS
+      sameSite: "Lax",
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+    }).cookie("accessToken", accessToken, {
+      httpOnly: true,
+      secure: false, // Set to true in production with HTTPS
+      sameSite: "Lax",
+      maxAge: 15 * 60 * 1000, // 15 minutes
     });
 
     //10. send response with
@@ -373,8 +388,8 @@ export const logOutUserController = async (req, res) => {
     //7. clear cookies
     res.clearCookie("refreshToken", {
       httpOnly: true,
-      secure: true,
-      sameSite: true,
+      secure: false, // Set to true in production with HTTPS
+      sameSite: "Lax",
     });
 
     res.status(200).json({
@@ -417,8 +432,8 @@ export const logOutAllUserController = async (req, res) => {
    //5. clear cookies
     res.clearCookie("refreshToken", {
       httpOnly: true,
-      secure: true,
-      sameSite: true, 
+      secure: false, // Set to true in production with HTTPS
+      sameSite: "Lax",
     });
     //6. send response
     res.status(200).json({

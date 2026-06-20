@@ -8,6 +8,7 @@ import cookieParser from "cookie-parser";
 import session from "express-session";
 import cors from "cors";
 import emergencyRoutes from "./Src/routes/emergencyRoutes.js"
+import { auth } from "./Src/middleware/authMiddleware.js"
 
 dotenv.config()
 const app = express()
@@ -32,7 +33,7 @@ app.use(express.urlencoded({ extended: true }))
 app.use("/api/auth",authRoutes)
 
 app.use("/api/emergency", emergencyRoutes )
-app.use("/api/contacts", contactRoutes)
+app.use("/api/contacts",auth, contactRoutes)
 
 const PORT = process.env.PORT || 4000
 
