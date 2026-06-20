@@ -9,47 +9,55 @@ import NearbyHelp from "../NearbyHelp/NearbyHelp";
 const Dashboard = () => {
   return (
     <div className="min-h-screen bg-gray-100">
-      {/* Navbar */}
-      <nav className="sticky top-0 z-50 bg-white shadow-md">
-        <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
-          {/* Logo */}
-          <div className="flex items-center gap-2">
+     <nav className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-100">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+        
+        {/* Left Side: Modern Logo Alignment */}
+        <div className="flex items-center gap-3 cursor-pointer group">
+          <div className="relative">
             <img
               src="/logo.png"
               alt="Rakshika Logo"
-              className="h-10 w-10 sm:h-12 sm:w-12"
+              className="h-9 w-9 sm:h-10 sm:w-10 object-contain transition-transform group-hover:scale-105 duration-200"
             />
-            <h1 className="text-xl sm:text-2xl font-bold text-pink-600">
-              Rakshika
-            </h1>
+            {/* Soft decorative pulsing ring matching a security theme */}
+            <span className="absolute inset-0 rounded-full border border-rose-500/20 animate-ping scale-110 opacity-70 pointer-events-none"></span>
           </div>
-
-          {/* Right Side */}
-          <div className="flex items-center gap-4">
-            <div className="relative cursor-pointer">
-              <IoNotifications
-                size={28}
-                className="text-pink-600 sm:w-8 sm:h-8"
-              />
-
-              <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] rounded-full h-5 w-5 flex items-center justify-center">
-                5
-              </span>
-            </div>
-
-            <div className="hidden sm:flex items-center gap-2">
-              <img
-                src="https://i.pravatar.cc/40"
-                alt="Profile"
-                className="h-9 w-9 rounded-full"
-              />
-              <h3 className="font-medium text-gray-700">
-                Anjali Sharma
-              </h3>
-            </div>
-          </div>
+          
+          <h1 className="text-xl font-black text-slate-900 tracking-tight">
+            Rakshika
+          </h1>
         </div>
-      </nav>
+
+        {/* Right Side: Clean Telemetry Controls */}
+        <div className="flex items-center gap-5">
+          
+          {/* Notification Hub with Ring Animation */}
+          <button className="relative p-1.5 text-slate-500 hover:text-slate-800 rounded-xl hover:bg-slate-50 transition-all duration-200 focus:outline-none">
+            <IoNotifications size={24} />
+            
+            {/* Soft, centered notification badge pill */}
+            <span className="absolute top-1 right-1 bg-rose-500 text-white text-[10px] font-bold rounded-full h-4 w-4 flex items-center justify-center ring-2 ring-white">
+              5
+            </span>
+          </button>
+
+          {/* User profile layout — Optimized to stay clean on both mobile & desktop */}
+          <div className="flex items-center gap-3 pl-2 border-l border-slate-100 h-6">
+            <img
+              src="https://i.pravatar.cc/40"
+              alt="Profile avatar"
+              className="h-8 w-8 rounded-xl object-cover ring-2 ring-slate-100 cursor-pointer hover:opacity-90 transition-opacity"
+            />
+            <h3 className="hidden sm:block text-sm font-semibold text-slate-700 tracking-tight">
+              Anjali Sharma
+            </h3>
+          </div>
+
+        </div>
+
+      </div>
+    </nav>
 
       {/* Main Dashboard */}
       <div className="max-w-7xl mx-auto px-4 py-6">

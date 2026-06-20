@@ -6,8 +6,9 @@ import { IoNotifications } from "react-icons/io5";
 import { FaMapMarkerAlt } from "react-icons/fa";
 import { FaAddressBook } from "react-icons/fa";
 import { FaShieldAlt } from "react-icons/fa";
+import {Phone,ArrowRight} from "lucide-react"
 import Login from "../Login/Login";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,Link } from "react-router-dom";
 
 const LandingPage = () => {
 
@@ -27,6 +28,10 @@ const LandingPage = () => {
             <h1 className="text-4xl md:text-5xl font-bold px-6 md:px-20 mb-4 text-center md:text-left">
               Your Safety <br /> is Our Priority
             </h1>
+
+            <h3 className="text-lg md:text-2xl px-6 md:px-20 mb-6 text-center md:text-left text-gray-700 flex items-center gap-2">
+              <Phone size={20} /> Women Helpline 1091
+            </h3>
 
             <p className="text-lg md:text-2xl px-6 md:px-20 mb-6 text-center md:text-left text-gray-700">
               We are here to help you in any emergency.
@@ -97,7 +102,6 @@ const LandingPage = () => {
                 We are always working to ensure your safety and security.
               </p>
             </div>
-
           </div>
         </section>
 

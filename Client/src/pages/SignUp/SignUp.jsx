@@ -13,17 +13,29 @@ const SignUp = () => {
     e.preventDefault();
     // Handle form submission logic here
 
-    const response = await axiosInstance.post("http://localhost:3000/api/auth/register", { name, email,phone, password })
+   try {
+     const response = await axiosInstance.post("http://localhost:4000/api/auth/register", { name, email,phone, password })
     console.log(response.data)
-    // navigate("/login");
+    navigate("/login");
 
-    // Reset form fields
+     alert("Registration Successful!");
+
     setName("");
     setEmail("");
     setPhone("");
     setPassword("");
-  };
 
+    navigate("/login");
+    
+   } catch (error) {
+       console.error(error);
+    alert(
+      error.response?.data?.message ||
+      "Something went wrong"
+    );
+  }
+   }
+  
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-black to-gray-800 px-4">
       {/* Card */}
@@ -57,7 +69,7 @@ const SignUp = () => {
 
           {/* Phone */}
           <input
-            type="pone"
+            type="tel"
             placeholder="Enter PhoneNumber"
             name="phone"
             value={phone}
@@ -84,7 +96,7 @@ const SignUp = () => {
 
           {/* Button */}
           <button
-            onSubmit={handleSubmit}
+            // onSubmit={handleSubmit}
             type="submit"
             className="mt-2 py-3 rounded-lg bg-pink-500 hover:bg-pink-600 transition duration-300 font-medium shadow-md hover:scale-[1.02]"
           >

@@ -12,10 +12,10 @@ const Login = () => {
 
     try {
       const response = await axiosInstance.post(
-        "http://localhost:3000/api/auth/login",
+        "http://localhost:4000/api/auth/login",
         { email, password },
       );
-      // navigate("/dashboard");
+      navigate("/dashboard");
       console.log(response.data)
     } catch (error) {
       console.error("Login Error", error);
