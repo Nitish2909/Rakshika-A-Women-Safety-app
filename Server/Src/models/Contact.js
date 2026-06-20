@@ -1,31 +1,22 @@
 import mongoose from "mongoose";
 
-const contactSchema = mongoose.Schema({
-    userId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
+const contactSchema = new mongoose.Schema({
+    name: { 
+        type: String, 
+        required: [true, 'Contact name is required'],
+        trim: true 
     },
-    name: {
-        type: String,
-        required: true,
+    phone: { 
+        type: String, 
+        required: [true, 'Phone number is required'] 
     },
-    phone: {
-        type: String,
-        required: true,
-    },
-    relationship: {
-        type: String,
-        required: true,
-    },
+    relation: { 
+        type: String, 
+        required: [true, 'Relationship context is required'],
+        enum: ['Primary Support', 'Secondary Support', 'Family', 'Friend / Neighbor']
+    }
+}, { timestamps: true });
 
-    isPrimary: {
-        type: Boolean,
-        default: false,
-    },
-}, {
-    timestamps: true,
-});
+ const Contact = mongoose.model('Contact', contactSchema);
 
-const Contact = mongoose.model("Contact", contactSchema)
-
-export default Contact;
+ export default Contact;

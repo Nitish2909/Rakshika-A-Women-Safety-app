@@ -62,7 +62,7 @@ export const registerUserController = async (req, res) => {
     //9.store token in cookies
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
-      secure: true,
+      secure: false, // Set to true in production with HTTPS
       sameSite: "none",
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     });
@@ -212,7 +212,7 @@ export const loginUserController = async (req, res) => {
     //11. store token in cookies
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
-      secure: true,
+      secure: false, // Set to true in production with HTTPS
       sameSite: "none",
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     });
