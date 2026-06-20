@@ -221,18 +221,34 @@
 
 // export default Contacts;
 
-import React, { useState } from "react";
+
+import React, { useState, useEffect } from "react"; // 1. Added useEffect
 import { Plus, Shield, X, Phone, MoreVertical, Pencil, Trash2 } from "lucide-react";
-import { createContactApi } from "../../services/contactService"; // Import the API function
+import { createContactApi, getAllContactsApi } from "../../services/contactService"; // 2. Imported getAllContactsApi
 
 const Contacts = () => {
   const [contacts, setContacts] = useState([]);
-  const [activeMenu, setActiveMenu] = useState(null); // Added back for dropdown toggle control
+  const [activeMenu, setActiveMenu] = useState(null); 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [formData, setFormData] = useState({ name: "", phone: "", relation: "" });
   
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+
+  // ==================== FIX 1: FETCH FROM BACKEND ON INITIAL LOAD ====================
+  useEffect(() => {
+    const loadStoredContacts = async () => {
+      try {
+        const data = await getAllContactsApi();
+        // If backend returns data in an object wrapper like { contacts: [] }, use data.contacts
+        setContacts(Array.isArray(data) ? data : data.contacts || []);
+      } catch (err) {
+        console.error("Failed to sync structural contact list registry:", err);
+      }
+    };
+    loadStoredContacts();
+  }, []);
+  // ===================================================================================
 
   const toggleMenu = (id) => {
     setActiveMenu(activeMenu === id ? null : id);
@@ -248,9 +264,13 @@ const Contacts = () => {
     setIsLoading(true);
 
     try {
-      const savedContact = await createContactApi(formData);
+      const response = await createContactApi(formData);
 
-      // Append the newly created database contact object to the local UI state
+      // ==================== FIX 2: EXTRACT TARGET DOCUMENT SHAPE ====================
+      // If your backend responds with { contact: {...} } or { data: {...} }, unpack it here:
+      const savedContact = response.contact || response.data || response;
+
+      // Append clean database payload item straight onto local UI collection state 
       setContacts((prevContacts) => [savedContact, ...prevContacts]);
 
       setFormData({ name: "", phone: "", relation: "" });
@@ -282,68 +302,72 @@ const Contacts = () => {
           </button>
         </div>
 
-        {/* ==================== CRITICAL ADDITION: THE VISUAL GRID ==================== */}
+        {/* Visual Contacts Mapping Grid */}
         {contacts.length === 0 ? (
           <div className="text-center py-12 bg-white rounded-2xl border border-dashed border-slate-200 text-slate-400 font-medium text-sm">
             No contacts added yet. Click the "+" icon to add your first emergency contact.
           </div>
         ) : (
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
-            {contacts.map((contact) => (
-              <div
-                key={contact._id} // Note: Changed contact.id to contact._id to match MongoDB
-                className="relative bg-white rounded-2xl border border-slate-100 p-4 flex flex-col items-center text-center shadow-[0_4px_20px_rgba(0,0,0,0.02)]"
-              >
-                {/* Options Menu Trigger */}
-                <div className="absolute top-2 right-2">
-                  <button 
-                    onClick={() => toggleMenu(contact._id)}
-                    className="p-1.5 text-slate-400 hover:text-slate-600 rounded-lg hover:bg-slate-50"
-                  >
-                    <MoreVertical size={16} />
+            {contacts.map((contact) => {
+              // Extra safety check in case a malformed item slips into the array loop
+              if (!contact) return null;
+
+              return (
+                <div
+                  key={contact._id || contact.id} 
+                  className="relative bg-white rounded-2xl border border-slate-100 p-4 flex flex-col items-center text-center shadow-[0_4px_20px_rgba(0,0,0,0.02)]"
+                >
+                  {/* Options Menu Trigger */}
+                  <div className="absolute top-2 right-2">
+                    <button 
+                      onClick={() => toggleMenu(contact._id)}
+                      className="p-1.5 text-slate-400 hover:text-slate-600 rounded-lg hover:bg-slate-50"
+                    >
+                      <MoreVertical size={16} />
+                    </button>
+
+                    {activeMenu === contact._id && (
+                      <div className="absolute right-0 mt-1 w-28 bg-white border border-slate-100 rounded-xl shadow-lg z-10 py-1 overflow-hidden">
+                        <button className="w-full px-3 py-2 text-left text-xs font-semibold text-slate-600 hover:bg-slate-50 flex items-center gap-2">
+                          <Pencil size={12} /> Edit
+                        </button>
+                        <button className="w-full px-3 py-2 text-left text-xs font-semibold text-rose-600 hover:bg-rose-50 flex items-center gap-2">
+                          <Trash2 size={12} /> Delete
+                        </button>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Contact Profile Initials Circle */}
+                  <div className="w-12 h-12 rounded-full bg-slate-900 text-white flex items-center justify-center font-bold text-base shadow-inner mb-3 mt-2">
+                    {contact.name ? contact.name.charAt(0).toUpperCase() : "?"}
+                  </div>
+
+                  {/* Text Information Layout Content fields */}
+                  <div className="mb-4 w-full px-1">
+                    <h3 className="font-bold text-slate-800 text-sm sm:text-base truncate">
+                      {contact.name || "Unknown Name"}
+                    </h3>
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-rose-500/80 block mt-0.5">
+                      {contact.relation || "No Relation Specified"}
+                    </span>
+                    <p className="text-slate-400 font-mono text-[11px] sm:text-xs mt-1 truncate">
+                      {contact.phone || "No Phone Provided"}
+                    </p>
+                  </div>
+
+                  {/* Call Button */}
+                  <button className="w-full py-2.5 bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 shadow-md shadow-emerald-100 transition-all active:scale-95">
+                    <Phone size={14} fill="currentColor" /> Call
                   </button>
-
-                  {activeMenu === contact._id && (
-                    <div className="absolute right-0 mt-1 w-28 bg-white border border-slate-100 rounded-xl shadow-lg z-10 py-1 overflow-hidden">
-                      <button className="w-full px-3 py-2 text-left text-xs font-semibold text-slate-600 hover:bg-slate-50 flex items-center gap-2">
-                        <Pencil size={12} /> Edit
-                      </button>
-                      <button className="w-full px-3 py-2 text-left text-xs font-semibold text-rose-600 hover:bg-rose-50 flex items-center gap-2">
-                        <Trash2 size={12} /> Delete
-                      </button>
-                    </div>
-                  )}
                 </div>
-
-                {/* Contact Profile Initials */}
-                <div className="w-12 h-12 rounded-full bg-slate-900 text-white flex items-center justify-center font-bold text-base shadow-inner mb-3 mt-2">
-                  {contact.name ? contact.name.charAt(0).toUpperCase() : "?"}
-                </div>
-
-                {/* Text Layout */}
-                <div className="mb-4 w-full px-1">
-                  <h3 className="font-bold text-slate-800 text-sm sm:text-base truncate">
-                    {contact.name}
-                  </h3>
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-rose-500/80 block mt-0.5">
-                    {contact.relation}
-                  </span>
-                  <p className="text-slate-400 font-mono text-[11px] sm:text-xs mt-1 truncate">
-                    {contact.phone}
-                  </p>
-                </div>
-
-                {/* Call Button */}
-                <button className="w-full py-2.5 bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 shadow-md shadow-emerald-100 transition-all active:scale-95">
-                  <Phone size={14} fill="currentColor" /> Call
-                </button>
-              </div>
-            ))}
+              );
+            })}
           </div>
         )}
-        {/* ============================================================================ */}
 
-        {/* Modal Window Overlay */}
+        {/* Modal Window Overlay Form Wrapper */}
         {isModalOpen && (
           <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center p-4 z-50">
             <div className="bg-white rounded-3xl w-full max-w-md p-6 border border-slate-100 relative">

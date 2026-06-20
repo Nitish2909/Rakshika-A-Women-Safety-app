@@ -14,9 +14,12 @@ const Login = () => {
       const response = await axiosInstance.post(
         "http://localhost:4000/api/auth/login",
         { email, password },
+        {
+          withCredentials: true,
+        },
       );
       navigate("/dashboard");
-      console.log(response.data)
+      console.log(response.data);
     } catch (error) {
       console.error("Login Error", error);
     }
